@@ -1,6 +1,8 @@
 # OSX
 #
 .DS_Store
+.AppleDouble
+.LSOverride
 
 # Xcode
 #
@@ -40,6 +42,8 @@ local.properties
 node_modules/
 npm-debug.log
 yarn-error.log
+npm-debug.*
+yarn-debug.*
 
 # fastlane
 #
@@ -73,3 +77,29 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Expo (if using)
+.expo/
+dist/
+web-build/
+
+# VSCode
+.vscode/
+
+# TypeScript
+*.tsbuildinfo
