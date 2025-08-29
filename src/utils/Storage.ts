@@ -32,3 +32,5 @@ const clear =async()=>{
         console.error("Error clearing storage", e);
     }
 }
+
+export { save, load, remove, clear };
