@@ -10,6 +10,8 @@ import com.facebook.react.ReactPackage
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 
+import cn.reactnative.modules.update.UpdateContext;
+
 class MainApplication : Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost =
@@ -26,8 +28,12 @@ class MainApplication : Application(), ReactApplication {
 
         override val isNewArchEnabled: Boolean = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
         override val isHermesEnabled: Boolean = BuildConfig.IS_HERMES_ENABLED
-      }
 
+        //添加以下代码
+        override fun getJSBundleFile(): String? {
+          return UpdateContext.getBundleUrl(this@MainApplication)
+        }
+      }
   override val reactHost: ReactHost
     get() = getDefaultReactHost(applicationContext, reactNativeHost)
 

@@ -17,6 +17,11 @@ import CategoryList from './components/CategoryList';
 
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useUpdate } from 'react-native-update';
+import {save} from '../../utils/Storage';
+
+import _updateConfig from '../../../update.json';
+const { appKey } = _updateConfig.android;
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -27,14 +32,50 @@ export default observer(() => {
 
   const [tab, setTab] = useState<number>(1);
 
+  const {
+    checkUpdate,
+    downloadUpdate,
+    switchVersionLater,
+    switchVersion,
+  } = useUpdate();
+
   useEffect(() => {
     store.requestHomeList();
     store.getCategoryList();
+
+    checkPatch();
   }, []);
 
-  const onArticlePress = useCallback((article: ArticleSimple) => () => {
-    navigation.push('ArticleDetail', { id: article.id });//使用push跳转文章详情
-  }, []);
+  // 检查补丁更新
+  const checkPatch = async () => {
+    const info: any = await checkUpdate();
+    const { update, name, description, metaInfo } = info;
+    const metaJson = JSON.parse(metaInfo);
+    save('patchVersion', name);
+    const { forceUpdate } = metaJson;
+    if (forceUpdate) {
+      // 弹窗提示用户
+    } else {
+      // 不弹窗默默操作
+    }
+    if (update) {
+      const hash = await downloadUpdate();
+      if (hash) {
+        if (forceUpdate) {
+          switchVersion();
+        } else {
+          switchVersionLater();
+        }
+      }
+    }
+  };
+
+  const onArticlePress = useCallback(
+    (article: ArticleSimple) => () => {
+      navigation.push('ArticleDetail', { id: article.id }); //使用push跳转文章详情
+    },
+    [],
+  );
 
   const renderItem = ({
     item,
@@ -188,7 +229,7 @@ const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'center',
     fontSize: 14,
-    color: '#999',
+    color: 'red',
     marginVertical: 16,
     textAlignVertical: 'center',
   },

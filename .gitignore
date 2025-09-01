@@ -103,3 +103,7 @@ web-build/
 
 # TypeScript
 *.tsbuildinfo
+
+.update
+# react-native-update
+.pushy
